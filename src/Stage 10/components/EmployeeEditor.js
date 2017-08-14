@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
 
 class EmployeeEditor extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       employee: null,
       originalEmployee: null,
       notModified: true
     };
+
+    this.save = this.save.bind(this);
+    this.cancel = this.cancel.bind(this);
   }
 
-  // componentWillReceiveProps
+  componentWillReceiveProps(props) {
+    this.setState({ employee: Object.assign({}, props.selected),
+      originalEmployee: props.selected, notModified: true });
+  }
 
   handleChange(prop, val) {
-  if ( this.state.notModified ) {
-    this.setState({ notModified: false })
-  }
+    if ( this.state.notModified ) {
+      this.setState({ notModified: false });
+    }
 
-  var employeeCopy = Object.assign({}, this.state.employee);
-  employeeCopy[prop] = val;
-  this.setState({ employee: employeeCopy });
-}
+    var employeeCopy = Object.assign({}, this.state.employee);
+    employeeCopy[prop] = val;
+    this.setState({ employee: employeeCopy });
+  }
 
   save() {
     this.state.originalEmployee.updateName(this.state.employee.name);
